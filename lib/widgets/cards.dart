@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
-import './models/transactions.dart';
 
 class Cards extends StatelessWidget {
   final String title;
@@ -8,8 +8,9 @@ class Cards extends StatelessWidget {
   final DateTime date;
   final int id;
   final Function remove;
-  
-  Cards(@required this.title, @required this.amount, @required this.date,@required this.id,@required this.remove);
+  double tmpAmt;
+  Cards(@required this.title, @required this.amount, @required this.date,@required this.id,@required this.remove){
+    tmpAmt = (amount<0)?-amount:amount;}
      
     
   @override
@@ -28,10 +29,12 @@ class Cards extends StatelessWidget {
               fit: FlexFit.tight,
               child: Container(
                   decoration: BoxDecoration(
+                    borderRadius: BorderRadius.all(Radius.circular(100)),
                     border: Border.all(
                         color:
                             (amount < 0) ? Colors.red[300] : Colors.green[300],
                         width: 3),
+                        //shape: BoxShape.circle,
                   ),
                   margin: EdgeInsets.all(4),
                   padding: EdgeInsets.all(3),
@@ -40,7 +43,7 @@ class Cards extends StatelessWidget {
                       height: 40,
                       alignment: Alignment.center,
                       child: Text(
-                        '₹${(amount < 0) ? -amount : amount}',
+                        '₹' + tmpAmt.toStringAsFixed(1),
                         style: TextStyle(
                             color: (amount >= 0)
                                 ? Colors.lightGreen[300]
@@ -65,7 +68,7 @@ class Cards extends StatelessWidget {
                           fontWeight: FontWeight.bold,
                         ),
                       ),
-                      Text(date.toString(),
+                      Text(DateFormat.yMMMd().add_jm().format(date),
                         style: TextStyle(color: Colors.grey, fontSize: 15),
                       )
                     ],
